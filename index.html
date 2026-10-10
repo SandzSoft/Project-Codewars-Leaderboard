@@ -1,13 +1,104 @@
-<!DOCTYPE html>
+```html
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codewars leaderboard</title>
-</head>
-<body>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Compare Codewars users by their overall and programming language rankings."
+    />
+    <title>Codewars Leaderboard | SandzSoft</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.mjs" type="module"></script>
+  </head>
 
-<script src="index.mjs" type="module"></script>
+  <body>
+    <main>
+      <header>
+        <h1>Codewars Leaderboard</h1>
+        <p>Compare Codewars users by their scores and rankings.</p>
+      </header>
+
+      <section id="add_users" aria-labelledby="add_users_heading">
+        <h2 id="add_users_heading">Add Users</h2>
+
+        <form id="add_users_form">
+          <label for="usernames">Codewars usernames (comma-separated)</label>
+
+          <input
+            type="text"
+            id="usernames"
+            name="usernames"
+            placeholder="e.g. CodeYourFuture, 40thieves, SallyMcGrath"
+            aria-describedby="usernames_help"
+            autocomplete="off"
+            required
+          />
+
+          <p id="usernames_help">
+            Enter one or more usernames, separated by commas.
+          </p>
+
+          <button type="submit" id="add_users_button">Add Users</button>
+        </form>
+
+        <p id="users_message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="select_users" aria-labelledby="select_users_heading">
+        <h2 id="select_users_heading">Select Users to Compare</h2>
+
+        <table id="users_table">
+          <caption>
+            Available Codewars users
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Select</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <button type="button" id="compare_users_button">
+          Compare Selected Users
+        </button>
+
+        <p id="leaderboard_message" role="status" aria-live="polite"></p>
+
+        <section id="leaderboard_section" aria-labelledby="leaderboard_heading">
+          <h2 id="leaderboard_heading">Leaderboard</h2>
+
+          <label for="ranking_select">Choose a ranking</label>
+          <select id="ranking_select" name="ranking">
+            <option value="overall">Overall</option>
+          </select>
+
+          <table id="leaderboard_table">
+            <caption>
+              Codewars user rankings, sorted by score
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Clan</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+      </section>
+
+      <footer>
+        <p>
+          Created by Sandani Kannangara |
+          <a href="https://github.com/SandzSoft"> SandzSoft on GitHub </a>
+        </p>
+      </footer>
+    </main>
+  </body>
 </html>
+```
