@@ -6,97 +6,269 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Compare Codewars users by their overall and programming language rankings."
+      content="Compare Codewars users, explore programming language rankings, and celebrate the top scorers."
     />
+    <meta name="theme-color" content="#171b43" />
     <title>Codewars Leaderboard | SandzSoft</title>
     <link rel="stylesheet" href="style.css" />
     <script src="index.mjs" type="module"></script>
   </head>
 
   <body>
-    <main>
-      <header>
-        <h1>Codewars Leaderboard</h1>
-        <p>Compare Codewars users by their scores and rankings.</p>
+    <main class="page-container">
+      <!-- Hero header -->
+      <header class="hero">
+        <div class="hero-decoration" aria-hidden="true"></div>
+
+        <div class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none">
+            <path
+              d="M24 4L29 9L36 8L39 15L44 19L41 26L43 33L36 37L32 43L24 41L17 44L12 37L5 34L7 26L4 19L10 14L12 7L20 9L24 4Z"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17 17L12 24L17 31M31 17L36 24L31 31M27 15L21 33"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="hero-content">
+          <p class="eyebrow">YOUR CODING COMMUNITY</p>
+          <h1>Codewars <span>Leaderboard</span></h1>
+          <p class="hero-subtitle">
+            Compare skills. Celebrate progress. Climb the ranks.
+          </p>
+        </div>
+
+        <div class="api-badge">
+          <span class="api-badge-icon" aria-hidden="true">&lt;/&gt;</span>
+          <span>Powered by<br /><strong>Codewars API</strong></span>
+        </div>
       </header>
 
-      <section id="add_users" aria-labelledby="add_users_heading">
-        <h2 id="add_users_heading">Add Users</h2>
+      <!-- Add users -->
+      <section
+        id="add_users"
+        class="panel add-users-panel"
+        aria-labelledby="add_users_heading"
+      >
+        <div class="section-heading">
+          <div class="section-icon users-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M16 21V19C16 16.8 14.2 15 12 15H7C4.8 15 3 16.8 3 19V21M9.5 11C11.4 11 13 9.4 13 7.5S11.4 4 9.5 4 6 5.6 6 7.5 7.6 11 9.5 11ZM17 11C18.7 11 20 9.7 20 8S18.7 5 17 5M17 15C19.2 15 21 16.8 21 19V21"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
 
-        <form id="add_users_form">
-          <label for="usernames">Codewars usernames (comma-separated)</label>
+          <div>
+            <h2 id="add_users_heading">Build Your Leaderboard</h2>
+            <p>Add the Codewars users you want to compare.</p>
+          </div>
+        </div>
 
-          <input
-            type="text"
-            id="usernames"
-            name="usernames"
-            placeholder="e.g. CodeYourFuture, 40thieves, SallyMcGrath"
-            aria-describedby="usernames_help"
-            autocomplete="off"
-            required
-          />
+        <div class="add-users-form">
+          <label for="usernames">Codewars usernames</label>
 
-          <p id="usernames_help">
-            Enter one or more usernames, separated by commas.
+          <div class="input-row">
+            <input
+              type="text"
+              id="usernames"
+              name="usernames"
+              placeholder="e.g. CodeYourFuture, 40thieves, SallyMcGrath"
+              aria-describedby="usernames_help"
+              autocomplete="off"
+              spellcheck="false"
+            />
+
+            <button type="button" id="add_users_button" class="primary-button">
+              <span aria-hidden="true">+</span>
+              Add Users
+            </button>
+          </div>
+
+          <p id="usernames_help" class="field-hint">
+            <span aria-hidden="true">✦</span>
+            Separate multiple usernames with commas.
           </p>
 
-          <button type="submit" id="add_users_button">Add Users</button>
-        </form>
-
-        <p id="users_message" role="status" aria-live="polite"></p>
+          <p id="users_message" class="status-message" role="status"></p>
+        </div>
       </section>
 
-      <section id="select_users" aria-labelledby="select_users_heading">
-        <h2 id="select_users_heading">Select Users to Compare</h2>
+      <!-- Comparison workspace -->
+      <section class="workspace" aria-label="User comparison and leaderboard">
+        <!-- User selection -->
+        <section
+          id="select_users"
+          class="panel selection-panel"
+          aria-labelledby="select_users_heading"
+        >
+          <div class="section-heading">
+            <div class="section-icon users-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M16 21V19C16 16.8 14.2 15 12 15H7C4.8 15 3 16.8 3 19V21M9.5 11C11.4 11 13 9.4 13 7.5S11.4 4 9.5 4 6 5.6 6 7.5 7.6 11 9.5 11ZM17 11C18.7 11 20 9.7 20 8S18.7 5 17 5M17 15C19.2 15 21 16.8 21 19V21"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
 
-        <table id="users_table">
-          <caption>
-            Available Codewars users
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Username</th>
-              <th scope="col">Select</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+            <div>
+              <h2 id="select_users_heading">Your Players</h2>
+              <p>Choose who enters the competition.</p>
+            </div>
+          </div>
 
-        <button type="button" id="compare_users_button">
-          Compare Selected Users
-        </button>
+          <div class="table-wrapper">
+            <table id="users_table">
+              <caption>
+                Codewars users available for comparison
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col" class="select-column">Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="empty-row">
+                  <td colspan="2">
+                    <div class="empty-state">
+                      <span class="empty-icon" aria-hidden="true">♙</span>
+                      <strong>No players yet</strong>
+                      <span>Add some usernames above to get started.</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <p id="leaderboard_message" role="status" aria-live="polite"></p>
+          <button
+            type="button"
+            id="compare_users_button"
+            class="primary-button compare-button"
+          >
+            <span aria-hidden="true">⚖</span>
+            Compare Selected Users
+          </button>
+        </section>
 
-        <section id="leaderboard_section" aria-labelledby="leaderboard_heading">
-          <h2 id="leaderboard_heading">Leaderboard</h2>
+        <!-- Leaderboard -->
+        <section
+          id="leaderboard_section"
+          class="panel leaderboard-panel"
+          aria-labelledby="leaderboard_heading"
+        >
+          <div class="leaderboard-top">
+            <div class="section-heading">
+              <div class="section-icon trophy-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M8 21H16M12 17V21M7 4H17V10C17 13.3 14.8 16 12 16S7 13.3 7 10V4ZM7 7H3V9C3 11.2 4.8 13 7 13M17 7H21V9C21 11.2 19.2 13 17 13"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
 
-          <label for="ranking_select">Choose a ranking</label>
-          <select id="ranking_select" name="ranking">
-            <option value="overall">Overall</option>
-          </select>
+              <div>
+                <h2 id="leaderboard_heading">The Leaderboard</h2>
+                <p>Every point counts. Every rank matters.</p>
+              </div>
+            </div>
 
-          <table id="leaderboard_table">
-            <caption>
-              Codewars user rankings, sorted by score
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Clan</th>
-                <th scope="col">Score</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+            <div class="ranking-control">
+              <label for="ranking_select">Ranking category</label>
+              <select id="ranking_select" name="ranking">
+                <option value="overall">Overall</option>
+              </select>
+            </div>
+          </div>
+
+          <p id="leaderboard_message" class="status-message" role="status"></p>
+
+          <div class="table-wrapper leaderboard-table-wrapper">
+            <table id="leaderboard_table">
+              <caption>
+                User rankings ordered by score, highest to lowest
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col" class="rank-column">Rank</th>
+                  <th scope="col">Username</th>
+                  <th scope="col">Clan</th>
+                  <th scope="col" class="score-column">Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="empty-row">
+                  <td colspan="4">
+                    <div class="empty-state leaderboard-empty">
+                      <span class="empty-icon trophy-empty" aria-hidden="true">
+                        ♜
+                      </span>
+                      <strong>Your podium awaits!</strong>
+                      <span>
+                        Select your players and compare their scores to see who
+                        comes out on top.
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="leaderboard-note">
+            <span aria-hidden="true">✦</span>
+            Rankings are fetched live from the Codewars API.
+          </p>
         </section>
       </section>
 
-      <footer>
-        <p>
-          Created by Sandani Kannangara |
-          <a href="https://github.com/SandzSoft"> SandzSoft on GitHub </a>
-        </p>
+      <!-- Footer -->
+      <footer class="site-footer">
+        <div class="footer-credit">
+          <span class="footer-heart" aria-hidden="true">♥</span>
+          <span>Created by <strong>Sandani Kannangara</strong></span>
+        </div>
+
+        <span class="footer-divider" aria-hidden="true"></span>
+
+        <a
+          class="github-link"
+          href="https://github.com/SandzSoft/Project-Codewars-Leaderboard"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="View the SandzSoft Codewars Leaderboard repository on GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 .9A11.1 11.1 0 0 0 8.5 22.5c.55.1.75-.24.75-.53v-2.05c-3.08.67-3.73-1.3-3.73-1.3-.5-1.28-1.23-1.62-1.23-1.62-1-.68.08-.67.08-.67 1.1.08 1.68 1.12 1.68 1.12.98 1.68 2.57 1.2 3.2.92.1-.72.39-1.2.7-1.48-2.46-.28-5.05-1.23-5.05-5.47 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.05 1.13a10.6 10.6 0 0 1 5.55 0c2.12-1.43 3.04-1.13 3.04-1.13.61 1.52.23 2.64.12 2.92.7.77 1.12 1.75 1.12 2.95 0 4.25-2.6 5.18-5.08 5.46.4.35.75 1.02.75 2.06v3.06c0 .3.2.64.76.53A11.1 11.1 0 0 0 12 .9Z"
+            />
+          </svg>
+          <span>View on GitHub</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+
+        <p class="footer-tagline">Keep learning. Keep coding.</p>
       </footer>
     </main>
   </body>
