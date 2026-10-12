@@ -4,7 +4,7 @@ const state = {
   usernames: [],
   validUsers: [],
   selectedLanguage: "overall",
-  cachedUsers: {},
+  languages: [],
 };
 
 function setup() {
@@ -12,11 +12,13 @@ function setup() {
   elements.addUsersButton = document.getElementById("add_users_button");
   elements.usersMessage = document.getElementById("users_message");
   elements.leaderboardMessage = document.getElementById("leaderboard_message");
+  elements.languageSelect = document.getElementById("ranking_select");
   elements.leaderboardTable = document.querySelector(
     "#leaderboard_table tbody",
   );
 
   elements.addUsersButton.addEventListener("click", handleAddUsersClick);
+  elements.languageSelect.addEventListener("change", handleLanguageChange);
 }
 
 async function handleAddUsersClick() {
@@ -32,30 +34,55 @@ async function handleAddUsersClick() {
   elements.usersMessage.textContent = "";
   elements.leaderboardMessage.textContent = "";
   elements.leaderboardTable.replaceChildren();
+
   state.validUsers = [];
+  state.languages = [];
 
   if (state.usernames.length === 0) {
     elements.usersMessage.textContent =
       "Please enter at least one Codewars username.";
     return;
   }
-
   elements.addUsersButton.disabled = true;
 
   try {
     await getValidUsers();
-
     if (state.validUsers.length === 0) {
       elements.leaderboardMessage.textContent =
         "No valid users were found. Please check the usernames and try again.";
       return;
     }
-
-    const rows = state.validUsers.map(createLeaderboardTable);
-    elements.leaderboardTable.replaceChildren(...rows);
+    createLanguageSelect();
+    elements.languageSelect.value = "overall";
+    state.selectedLanguage = "overall";
+    renderLeaderboard();
   } finally {
     elements.addUsersButton.disabled = false;
   }
+}
+
+function renderLeaderboard() {
+  const rows = sortUsersBySelectedLanguage(state.validUsers).map(
+    (user, index) => createLeaderboardTable(user, index + 1),
+  );
+  elements.leaderboardTable.replaceChildren(...rows);
+}
+
+function sortUsersBySelectedLanguage(users) {
+  if (state.selectedLanguage === "overall") {
+    return [...users].sort(
+      (a, b) => (b.ranks.overall?.score ?? 0) - (a.ranks.overall?.score ?? 0),
+    );
+  }
+  const filteredUsers = users.filter(
+    (user) => user.ranks.languages?.[state.selectedLanguage],
+  );
+
+  return [...filteredUsers].sort(
+    (a, b) =>
+      (b.ranks.languages[state.selectedLanguage]?.score ?? 0) -
+      (a.ranks.languages[state.selectedLanguage]?.score ?? 0),
+  );
 }
 
 async function getValidUsers() {
@@ -63,11 +90,6 @@ async function getValidUsers() {
   const failedUsers = [];
 
   for (const username of state.usernames) {
-    if (state.cachedUsers[username]) {
-      state.validUsers.push(state.cachedUsers[username]);
-      continue;
-    }
-
     try {
       const response = await fetch(
         `https://www.codewars.com/api/v1/users/${encodeURIComponent(username)}`,
@@ -81,32 +103,25 @@ async function getValidUsers() {
         }
         continue;
       }
-
       const user = await response.json();
-
-      state.cachedUsers[username] = user;
       state.validUsers.push(user);
     } catch {
       failedUsers.push(username);
     }
   }
-
   const messages = [];
-
   if (invalidUsers.length > 0) {
     messages.push(`Usernames not found: ${invalidUsers.join(", ")}.`);
   }
-
   if (failedUsers.length > 0) {
     messages.push(
       `Could not retrieve data for: ${failedUsers.join(", ")}. Please try again.`,
     );
   }
-
   elements.usersMessage.textContent = messages.join(" ");
 }
 
-function createLeaderboardTable({ username, clan, ranks }) {
+function createLeaderboardTable({ username, clan, ranks }, rank) {
   const row = document.createElement("tr");
   const rankCell = document.createElement("td");
   const usernameCell = document.createElement("td");
@@ -115,11 +130,44 @@ function createLeaderboardTable({ username, clan, ranks }) {
 
   usernameCell.textContent = username;
   clanCell.textContent = clan ?? "";
-  scoreCell.textContent = ranks.overall?.score ?? 0;
+  const selectedRank =
+    state.selectedLanguage === "overall"
+      ? ranks.overall
+      : ranks.languages[state.selectedLanguage];
 
+  scoreCell.textContent = selectedRank?.score ?? 0;
+  rankCell.textContent = rank;
+
+  if (rank === 1) {
+    row.classList.add("winner-row");
+  }
   row.append(rankCell, usernameCell, clanCell, scoreCell);
 
   return row;
+}
+
+function createLanguageSelect() {
+  while (elements.languageSelect.options.length > 1) {
+    elements.languageSelect.remove(1);
+  }
+
+  const languagesList = [];
+
+  state.validUsers.forEach((user) => {
+    languagesList.push(...Object.keys(user.ranks.languages ?? {}));
+  });
+  state.languages = [...new Set(languagesList)].sort();
+  state.languages.forEach((language) => {
+    const option = document.createElement("option");
+    option.value = language;
+    option.textContent = language;
+    elements.languageSelect.appendChild(option);
+  });
+}
+
+function handleLanguageChange(event) {
+  state.selectedLanguage = event.target.value;
+  renderLeaderboard();
 }
 
 window.addEventListener("load", setup);
