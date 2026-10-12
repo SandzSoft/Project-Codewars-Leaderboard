@@ -1,44 +1,25 @@
-// This is a placeholder file to show how you can "mock" fetch requests using
-// the nock library.
-// You can delete the contents of the file once you have understood how it
-// works.
-
-/*export function makeFetchRequest() {
-  return fetch("https://example.com/test");
-}*/
-
 const elements = {};
 
-// State object to hold application data
 const state = {
   usernames: [],
   validUsers: [],
-  selectedUsers: [],
-  selectedUsersData: [],
   selectedLanguage: "overall",
   cachedUsers: {},
 };
 
-// Setup function to initialize the application
 function setup() {
   elements.usernamesInput = document.getElementById("usernames");
   elements.addUsersButton = document.getElementById("add_users_button");
-  elements.compareUsersButton = document.getElementById("compare_users_button");
   elements.usersMessage = document.getElementById("users_message");
-
-  elements.usersTable = document.querySelector("#users_table tbody");
+  elements.leaderboardMessage = document.getElementById("leaderboard_message");
   elements.leaderboardTable = document.querySelector(
     "#leaderboard_table tbody",
   );
 
   elements.addUsersButton.addEventListener("click", handleAddUsersClick);
-  elements.compareUsersButton.addEventListener(
-    "click",
-    handleCompareUsersClick,
-  );
 }
 
-function handleAddUsersClick() {
+async function handleAddUsersClick() {
   state.usernames = [
     ...new Set(
       elements.usernamesInput.value
@@ -47,74 +28,98 @@ function handleAddUsersClick() {
         .filter((username) => username !== ""),
     ),
   ];
-  elements.usersMessage.textContent = "";
-  state.selectedUsers = []; // Reset selected users when rendering the table
-  state.selectedUsersData = []; // Reset selected users data when rendering the table
-  state.validUsers = []; // Reset valid users when rendering the table
-  elements.leaderboardTable.replaceChildren();
-  elements.usersTable.replaceChildren();
-  renderUsersTable();
-}
 
-async function renderUsersTable() {
-  await getValidUsers();
-  const users = state.validUsers.map(createUsersTable);
-  elements.usersTable.replaceChildren(...users);
+  elements.usersMessage.textContent = "";
+  elements.leaderboardMessage.textContent = "";
+  elements.leaderboardTable.replaceChildren();
+  state.validUsers = [];
+
+  if (state.usernames.length === 0) {
+    elements.usersMessage.textContent =
+      "Please enter at least one Codewars username.";
+    return;
+  }
+
+  elements.addUsersButton.disabled = true;
+
+  try {
+    await getValidUsers();
+
+    if (state.validUsers.length === 0) {
+      elements.leaderboardMessage.textContent =
+        "No valid users were found. Please check the usernames and try again.";
+      return;
+    }
+
+    const rows = state.validUsers.map(createLeaderboardTable);
+    elements.leaderboardTable.replaceChildren(...rows);
+  } finally {
+    elements.addUsersButton.disabled = false;
+  }
 }
 
 async function getValidUsers() {
   const invalidUsers = [];
+  const failedUsers = [];
+
   for (const username of state.usernames) {
     if (state.cachedUsers[username]) {
       state.validUsers.push(state.cachedUsers[username]);
       continue;
     }
+
     try {
       const response = await fetch(
         `https://www.codewars.com/api/v1/users/${encodeURIComponent(username)}`,
       );
+
       if (!response.ok) {
-        invalidUsers.push(username);
+        if (response.status === 404) {
+          invalidUsers.push(username);
+        } else {
+          failedUsers.push(username);
+        }
         continue;
       }
+
       const user = await response.json();
+
       state.cachedUsers[username] = user;
       state.validUsers.push(user);
     } catch {
-      elements.usersMessage.textContent = `Could not retrieve "${username}". Please check your connection and try again.`;
+      failedUsers.push(username);
     }
   }
+
+  const messages = [];
+
   if (invalidUsers.length > 0) {
-    elements.usersMessage.textContent = `The following usernames are invalid: ${invalidUsers.join(
-      ", ",
-    )}`;
+    messages.push(`Usernames not found: ${invalidUsers.join(", ")}.`);
   }
+
+  if (failedUsers.length > 0) {
+    messages.push(
+      `Could not retrieve data for: ${failedUsers.join(", ")}. Please try again.`,
+    );
+  }
+
+  elements.usersMessage.textContent = messages.join(" ");
 }
 
-function createUsersTable({ username }) {
+function createLeaderboardTable({ username, clan, ranks }) {
   const row = document.createElement("tr");
-  const cell1 = document.createElement("td");
-  const cell2 = document.createElement("td");
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.addEventListener("change", (event) => {
-    if (event.target.checked) {
-      state.selectedUsers.push(username);
-    } else {
-      state.selectedUsers = state.selectedUsers.filter(
-        (user) => user !== username,
-      );
-    }
-  });
+  const rankCell = document.createElement("td");
+  const usernameCell = document.createElement("td");
+  const clanCell = document.createElement("td");
+  const scoreCell = document.createElement("td");
 
-  cell1.textContent = username;
-  cell2.appendChild(checkbox);
-  row.appendChild(cell1);
-  row.appendChild(cell2);
+  usernameCell.textContent = username;
+  clanCell.textContent = clan ?? "";
+  scoreCell.textContent = ranks.overall?.score ?? 0;
+
+  row.append(rankCell, usernameCell, clanCell, scoreCell);
+
   return row;
 }
 
-function handleCompareUsersClick() {}
-
-// Initialize the application when the window loads
-window.onload = setup;
+window.addEventListener("load", setup);

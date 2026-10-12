@@ -8,40 +8,42 @@
       name="description"
       content="Compare Codewars users and explore their rankings across programming languages."
     />
+
     <title>Codewars Leaderboard | SandzSoft</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="style.css" />
     <script src="index.mjs" type="module"></script>
   </head>
+
   <body>
     <main class="page-container">
       <header class="hero">
-        <div class="hero-content">
-          <h1>Codewars Leaderboard</h1>
-          <p class="hero-subtitle">
-            Compare Codewars users by overall score or programming language.
-          </p>
-        </div>
+        <p class="eyebrow">DEVELOPER RANKINGS</p>
+        <h1>Codewars Leaderboard</h1>
+        <p class="hero-subtitle">
+          Compare developers by overall score or programming language.
+        </p>
       </header>
+
       <section
         class="panel add-users-panel"
         aria-labelledby="add-users-heading"
       >
         <div class="section-heading">
-          <div>
-            <h2 id="add-users-heading">Add developers</h2>
-            <p>
-              Enter one or more Codewars usernames to create your leaderboard.
-            </p>
-          </div>
+          <h2 id="add-users-heading">Compare developers</h2>
+          <p>Enter the Codewars usernames you want to compare.</p>
         </div>
+
         <div class="add-users-form">
           <label for="usernames">Codewars usernames</label>
+
           <div class="input-row">
             <input
               id="usernames"
@@ -52,13 +54,16 @@
               spellcheck="false"
               aria-describedby="usernames-help"
             />
+
             <button type="button" id="add_users_button" class="primary-button">
-              Add users
+              Compare users
             </button>
           </div>
+
           <p id="usernames-help" class="field-hint">
             Separate multiple usernames with commas.
           </p>
+
           <p
             id="users_message"
             class="status-message"
@@ -67,113 +72,78 @@
           ></p>
         </div>
       </section>
-      <div class="workspace">
-        <section
-          class="panel selection-panel"
-          aria-labelledby="players-heading"
-        >
+
+      <section
+        class="panel leaderboard-panel"
+        aria-labelledby="leaderboard-heading"
+      >
+        <div class="leaderboard-top">
           <div class="section-heading">
-            <div>
-              <h2 id="players-heading">Your players</h2>
-              <p>Choose who you want to compare.</p>
-            </div>
+            <h2 id="leaderboard-heading">Leaderboard</h2>
+            <p>Who's leading the way?</p>
           </div>
-          <div class="table-wrapper">
-            <table id="users_table">
-              <caption class="visually-hidden">
-                Codewars users available for comparison
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Username</th>
-                  <th scope="col" class="select-column">Select</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="empty-row">
-                  <td colspan="2">
-                    <div class="empty-state">
-                      <strong>No players yet</strong
-                      ><span>Add usernames above to get started.</span>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
+          <div class="ranking-control">
+            <label for="ranking_select">Ranking category</label>
+            <select id="ranking_select" name="ranking">
+              <option value="overall">Overall</option>
+            </select>
           </div>
-          <button
-            type="button"
-            id="compare_users_button"
-            class="primary-button compare-button"
-          >
-            Compare selected users
-          </button>
-        </section>
-        <section
-          class="panel leaderboard-panel"
-          aria-labelledby="leaderboard-heading"
-        >
-          <div class="leaderboard-top">
-            <div class="section-heading">
-              <div>
-                <h2 id="leaderboard-heading">Leaderboard</h2>
-                <p>See who is leading the way.</p>
-              </div>
-            </div>
-            <div class="ranking-control">
-              <label for="ranking_select">Ranking category</label>
-              <select id="ranking_select" name="ranking">
-                <option value="overall">Overall</option>
-              </select>
-            </div>
-          </div>
-          <p
-            id="leaderboard_message"
-            class="status-message"
-            role="status"
-            aria-live="polite"
-          ></p>
-          <div class="table-wrapper">
-            <table id="leaderboard_table">
-              <caption class="visually-hidden">
-                User rankings sorted from highest score to lowest score
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col" class="rank-column">Rank</th>
-                  <th scope="col">Username</th>
-                  <th scope="col">Clan</th>
-                  <th scope="col" class="score-column">Score</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="empty-row">
-                  <td colspan="4">
-                    <div class="empty-state leaderboard-empty">
-                      <strong>Your leaderboard awaits</strong
-                      ><span
-                        >Select your players and compare their scores.</span
-                      >
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="leaderboard-note">
-            <span class="status-dot" aria-hidden="true"></span> Rankings are
-            fetched live from the Codewars API.
-          </p>
-        </section>
-      </div>
+        </div>
+
+        <p
+          id="leaderboard_message"
+          class="status-message"
+          role="status"
+          aria-live="polite"
+        ></p>
+
+        <div class="table-wrapper">
+          <table id="leaderboard_table">
+            <caption class="visually-hidden">
+              Codewars users ranked from highest score to lowest score
+            </caption>
+
+            <thead>
+              <tr>
+                <th scope="col" class="rank-column">Rank</th>
+                <th scope="col">Username</th>
+                <th scope="col">Clan</th>
+                <th scope="col" class="score-column">Score</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr class="empty-row">
+                <td colspan="4">
+                  <div class="empty-state">
+                    <strong>Your leaderboard awaits</strong>
+                    <span>
+                      Enter usernames above to compare their scores.
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="leaderboard-note">
+          <span class="status-dot" aria-hidden="true"></span>
+          Rankings are fetched live from the Codewars API.
+        </p>
+      </section>
+
       <footer class="site-footer">
-        <span>Made by <strong>Sandani Kannangara</strong></span
-        ><a
+        <span> Made by <strong>Sandani Kannangara</strong> </span>
+
+        <a
           href="https://github.com/SandzSoft/Project-Codewars-Leaderboard"
           target="_blank"
           rel="noopener noreferrer"
-          >View on GitHub ↗</a
         >
+          View on GitHub ↗
+        </a>
       </footer>
     </main>
   </body>
