@@ -1,44 +1,71 @@
 /* ==========================================================
    CODEWARS LEADERBOARD
-   Modern dark developer dashboard
+   Midnight Blue + Victory Gold
    ========================================================== */
 
-/* 1. Colours and typography */
+/* 1. Design system */
 
 :root {
-  font-family: "Noto Sans", Arial, sans-serif;
+  font-family: system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+
   font-size: 16px;
-  line-height: 1.55;
-  color: #dce4de;
-  background: #0b110e;
+  line-height: 1.6;
+
+  color: #edf2fa;
+  background: #101827;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 
-  --background: #0b110e;
-  --surface: #111a15;
-  --surface-raised: #19241d;
-  --surface-hover: #202d24;
+  color-scheme: dark;
 
-  --border: #34443a;
-  --border-subtle: #29362e;
+  /* Backgrounds */
+  --page: #101827;
+  --panel: #1b2638;
+  --input-bg: #111b2b;
 
-  --text: #dce4de;
-  --muted: #aebdb3;
-  --heading: #f5f7f5;
+  /* Table */
+  --table-header: #253348;
+  --row-odd: #1b2638;
+  --row-even: #233148;
+  --row-hover: #2d405b;
 
-  --orange: #70401f;
-  --orange-border: #c18b3d;
+  /* Borders */
+  --border: #35445b;
+  --border-soft: #304056;
+  --input-border: #71829b;
 
-  --button: #e8b84d;
-  --button-hover: #f4c967;
+  /* Typography */
+  --text: #edf2fa;
+  --heading: #f8fafc;
+  --muted: #b4c2d4;
+  --subtle: #94a3b8;
 
-  --winner-background: #282719;
-  --winner-text: #ffda83;
+  /* Primary action */
+  --primary: #638cf5;
+  --primary-hover: #82a4ff;
+  --primary-text: #0c1831;
 
-  --error: #ffc0ad;
-  --success: #9bd28a;
+  /* Victory Gold */
+  --winner-bg: #40331c;
+  --winner-border: #e5b94f;
+  --winner-gold: #ffdf87;
+  --winner-strong: #f4ca64;
+  --winner-muted: #e6c77d;
+
+  /* Errors */
+  --error-bg: #38252e;
+  --error-text: #ffc1c8;
+  --error-border: #f09ca7;
+
+  /* Success */
+  --success: #9dd9b5;
 }
+
+/* 2. Reset */
 
 * {
   box-sizing: border-box;
@@ -53,6 +80,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+
+  background: var(--page);
+  color: var(--text);
 }
 
 button,
@@ -72,20 +102,22 @@ button:disabled {
 }
 
 a {
-  color: #f0c16e;
+  color: #a8c2ff;
   text-underline-offset: 4px;
 }
 
 a:hover {
-  color: #ffdda0;
+  color: #d2dfff;
 }
+
+/* Keyboard accessibility */
 
 :focus-visible {
-  outline: 3px solid #ffda83;
-  outline-offset: 4px;
+  outline: 3px solid #a9c3ff;
+  outline-offset: 3px;
 }
 
-/* Screen-reader-only text */
+/* Screen-reader utility */
 
 .visually-hidden {
   position: absolute;
@@ -99,13 +131,15 @@ a:hover {
   border: 0;
 }
 
-/* 2. Page layout */
+/* 3. Main container */
 
 .page-container {
-  width: min(1120px, calc(100% - 48px));
+  width: min(1100px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 42px 0 24px;
+  padding: 44px 0 28px;
 }
+
+/* 4. Header */
 
 .hero {
   margin-bottom: 34px;
@@ -113,50 +147,56 @@ a:hover {
 
 .eyebrow {
   margin: 0 0 10px;
-  color: #e8b84d;
-  font-size: 0.75rem;
+
+  color: #b5c9ed;
+
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 h1 {
   margin: 0;
+
   color: var(--heading);
-  font-size: clamp(2rem, 4vw, 2.8rem);
-  font-weight: 700;
+
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 750;
   letter-spacing: -0.04em;
   line-height: 1.2;
 }
 
 .hero-subtitle {
   max-width: 650px;
-  margin: 13px 0 0;
+  margin: 12px 0 0;
+
   color: var(--muted);
-  font-size: 1rem;
+
+  font-size: 16px;
   line-height: 1.7;
 }
 
-/* 3. Panels */
+/* 5. Panels */
 
 .panel {
   min-width: 0;
-  background: var(--surface);
+
+  background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
 }
 
 .add-users-panel {
-  padding: 26px;
+  padding: 28px;
   margin-bottom: 26px;
 }
 
 .leaderboard-panel {
-  padding: 26px 0 22px;
+  padding: 27px 0 22px;
 }
 
-/* 4. Section headings */
+/* 6. Section headings */
 
 .section-heading {
   min-width: 0;
@@ -164,42 +204,41 @@ h1 {
 
 .section-heading h2 {
   margin: 0;
+
   color: var(--heading);
-  font-size: 1.35rem;
-  font-weight: 650;
+
+  font-size: 22px;
+  font-weight: 700;
   line-height: 1.4;
 }
 
 .section-heading p {
   margin: 7px 0 0;
+
   color: var(--muted);
-  font-size: 0.9rem;
+
+  font-size: 15px;
   line-height: 1.65;
 }
 
 .add-users-panel .section-heading {
-  margin-bottom: 23px;
-}
-
-.leaderboard-top {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 28px;
-  padding: 0 26px;
   margin-bottom: 24px;
 }
 
-/* 5. Username input and ranking controls */
+/* 7. Form labels */
 
 .add-users-form>label,
 .ranking-control label {
   display: block;
   margin-bottom: 9px;
-  color: var(--heading);
-  font-size: 0.9rem;
+
+  color: #e5edfa;
+
+  font-size: 15px;
   font-weight: 600;
 }
+
+/* 8. Form layout */
 
 .input-row {
   display: flex;
@@ -207,14 +246,20 @@ h1 {
   gap: 12px;
 }
 
+/* 9. Input and select */
+
 #usernames,
 #ranking_select {
-  min-height: 48px;
-  padding: 11px 14px;
-  color: var(--heading);
-  background: var(--surface-raised);
-  border: 1px solid #58685d;
-  border-radius: 7px;
+  min-height: 50px;
+  padding: 12px 15px;
+
+  color: var(--text);
+  background: var(--input-bg);
+
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+
+  font-size: 16px;
 }
 
 #usernames {
@@ -223,53 +268,107 @@ h1 {
 }
 
 #usernames::placeholder {
-  color: #aebbb1;
+  color: #aebed4;
   opacity: 1;
 }
 
 #usernames:hover,
 #ranking_select:hover {
-  border-color: #85958a;
+  border-color: #9cb3d3;
 }
 
-#usernames:focus-visible,
-#ranking_select:focus-visible {
-  border-color: var(--button);
+#usernames:focus,
+#ranking_select:focus {
+  border-color: #a9c3ff;
 }
 
 #ranking_select option {
-  color: var(--heading);
-  background: var(--surface-raised);
+  color: var(--text);
+  background: var(--input-bg);
 }
 
+/* 10. Compare button */
+
 .primary-button {
-  min-height: 48px;
-  padding: 11px 21px;
-  color: #21190b;
-  background: var(--button);
-  border: 1px solid var(--orange-border);
-  border-radius: 7px;
-  font-size: 0.92rem;
+  min-height: 50px;
+  padding: 12px 24px;
+
+  color: var(--primary-text);
+  background: var(--primary);
+
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+
+  font-size: 16px;
   font-weight: 700;
   white-space: nowrap;
-  transition:
-    background-color 150ms ease,
-    transform 150ms ease;
+
+  transition: background-color 150ms ease;
 }
 
 .primary-button:hover:not(:disabled) {
-  background: var(--button-hover);
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
 }
 
 .primary-button:active:not(:disabled) {
-  transform: translateY(1px);
+  background: #557ce2;
 }
 
+/* 11. Form hint */
+
 .field-hint {
-  margin: 10px 0 0;
+  margin: 11px 0 0;
+
   color: var(--muted);
-  font-size: 0.84rem;
+
+  font-size: 14px;
   line-height: 1.6;
+}
+
+/* 12. Status messages */
+
+.status-message {
+  margin: 0;
+
+  color: var(--error-text);
+
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
+}
+
+.status-message:not(:empty) {
+  padding: 13px 16px;
+  margin: 17px 28px 0;
+
+  color: var(--error-text);
+  background: var(--error-bg);
+
+  border: 1px solid #81505d;
+  border-left: 4px solid var(--error-border);
+  border-radius: 8px;
+}
+
+/* Status inside form */
+
+.add-users-panel .status-message:not(:empty) {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* 13. Leaderboard top */
+
+.leaderboard-top {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+
+  gap: 28px;
+  padding: 0 28px;
+  margin-bottom: 25px;
 }
 
 .ranking-control {
@@ -279,103 +378,101 @@ h1 {
 
 #ranking_select {
   width: 100%;
-  font-size: 0.92rem;
 }
 
-/* 6. Status and error messages */
-
-.status-message {
-  margin: 0;
-  color: var(--error);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
-}
-
-.status-message:not(:empty) {
-  padding: 11px 14px;
-  margin: 16px 26px 0;
-  background: #2b1c19;
-  border: 1px solid #70463b;
-  border-radius: 7px;
-}
-
-.add-users-panel .status-message:not(:empty) {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-/* 7. Leaderboard table container */
+/* 14. Table wrapper */
 
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
+
   border-top: 1px solid var(--border);
-  scrollbar-color: #58685d var(--surface);
+
+  scrollbar-color: #617592 var(--panel);
   scrollbar-width: thin;
 }
 
+/* 15. Table */
+
 #leaderboard_table {
   width: 100%;
+
   border-collapse: separate;
   border-spacing: 0;
+
   text-align: left;
 }
 
-/* 8. Table headings */
+/* 16. Table headings */
 
 #leaderboard_table thead th {
-  padding: 15px 20px;
-  color: #bdc9c0;
-  background: #17211b;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.74rem;
+  padding: 17px 21px;
+
+  color: #c0cede;
+  background: var(--table-header);
+
+  border-bottom: 1px solid #455671;
+
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-/* 9. Table rows */
+/* 17. Alternating rows */
 
 #leaderboard_table tbody tr {
-  background: #111a15;
+  background: var(--row-odd);
+
   transition: background-color 150ms ease;
 }
 
-#leaderboard_table tbody tr:nth-child(even):not(.empty-row) {
-  background: #151f19;
+#leaderboard_table tbody tr:nth-child(even):not(.winner-row):not(.empty-row) {
+  background: var(--row-even);
 }
 
-#leaderboard_table tbody tr:hover:not(.empty-row) {
-  background: #202d24;
+#leaderboard_table tbody tr:hover:not(.winner-row):not(.empty-row) {
+  background: var(--row-hover);
 }
 
-/* 10. Table cells */
+/* 18. Table cells */
 
 #leaderboard_table tbody td {
-  padding: 17px 20px;
+  padding: 19px 21px;
+
   color: var(--text);
-  border-bottom: 1px solid var(--border-subtle);
-  font-size: 0.92rem;
+
+  border-bottom: 1px solid var(--border-soft);
+
+  font-size: 16px;
   line-height: 1.55;
+
   overflow-wrap: anywhere;
 }
 
-/* Position column */
+/* Rank column */
 
 #leaderboard_table th:first-child,
 #leaderboard_table td:first-child {
-  width: 76px;
+  width: 84px;
   text-align: center;
+}
+
+#leaderboard_table tbody td:first-child {
+  color: #c0cede;
+  font-weight: 700;
 }
 
 /* Username column */
 
 #leaderboard_table td:nth-child(2) {
-  min-width: 150px;
-  color: var(--heading);
-  font-weight: 600;
+  min-width: 160px;
+
+  color: #f1f5fb;
+
+  font-size: 16px;
+  font-weight: 650;
 }
 
 /* Clan column */
@@ -388,144 +485,233 @@ h1 {
 
 #leaderboard_table th:last-child,
 #leaderboard_table td:last-child {
-  min-width: 120px;
+  min-width: 125px;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-/* 11. First-place highlight */
+#leaderboard_table tbody td:last-child {
+  color: #f1f5fb;
 
-#leaderboard_table tbody tr.winner-row {
-  background: var(--winner-background);
-}
-
-#leaderboard_table tbody tr.winner-row:hover {
-  background: #353321;
-}
-
-#leaderboard_table tbody tr.winner-row td {
-  color: #f4e8c5;
-  border-top: 1px solid #8d763a;
-  border-bottom: 1px solid #8d763a;
-  font-weight: 600;
-}
-
-/* First-place position cell */
-
-#leaderboard_table tbody tr.winner-row td:first-child {
-  color: #21190b;
-  background: var(--button);
-  border-left: 4px solid #ffda83;
-  font-size: 1rem;
-  font-weight: 800;
-}
-
-/* First-place username */
-
-#leaderboard_table tbody tr.winner-row td:nth-child(2) {
-  color: var(--winner-text);
+  font-size: 16px;
   font-weight: 700;
 }
 
-/* First-place score */
+/* ==========================================================
+   19. FIRST PLACE - VICTORY GOLD
+   ========================================================== */
 
-#leaderboard_table tbody tr.winner-row td:last-child {
-  color: var(--winner-text);
-  font-size: 1.05rem;
+#leaderboard_table tbody tr.winner-row {
+  background: var(--winner-bg);
+}
+
+/* Golden winner row */
+
+#leaderboard_table tbody tr.winner-row td {
+  color: #f6e9c6;
+
+  border-top: 1px solid var(--winner-border);
+  border-bottom: 1px solid var(--winner-border);
+}
+
+/* Rank 1 gold badge cell */
+
+#leaderboard_table tbody tr.winner-row td:first-child {
+  color: #392607;
+  background: var(--winner-strong);
+
+  border-left: 4px solid var(--winner-border);
+
+  font-size: 19px;
   font-weight: 800;
 }
 
-/* 12. Empty leaderboard */
+/* Winner username */
+
+#leaderboard_table tbody tr.winner-row td:nth-child(2) {
+  color: var(--winner-gold);
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* Crown before winner username */
+
+#leaderboard_table tbody tr.winner-row td:nth-child(2)::before {
+  content: "♛";
+  display: inline-block;
+
+  margin-right: 10px;
+
+  color: var(--winner-strong);
+
+  font-size: 20px;
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+/* Champion label */
+
+#leaderboard_table tbody tr.winner-row td:nth-child(2)::after {
+  content: "CHAMPION";
+  display: block;
+
+  margin-top: 3px;
+  margin-left: 30px;
+
+  color: var(--winner-muted);
+
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.13em;
+}
+
+/* Winner clan */
+
+#leaderboard_table tbody tr.winner-row td:nth-child(3) {
+  color: #e8d7ad;
+  font-weight: 500;
+}
+
+/* Winner score */
+
+#leaderboard_table tbody tr.winner-row td:last-child {
+  color: var(--winner-gold);
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+/* 20. Second and third ranks */
+
+#leaderboard_table tbody tr:nth-child(2):not(.winner-row):not(.empty-row) td:first-child {
+  color: #dce4f0;
+  font-weight: 800;
+}
+
+#leaderboard_table tbody tr:nth-child(3):not(.winner-row):not(.empty-row) td:first-child {
+  color: #e6b394;
+  font-weight: 800;
+}
+
+/* 21. Empty leaderboard */
 
 #leaderboard_table tbody tr.empty-row td {
   padding: 0;
-  background: var(--surface);
+
+  background: var(--panel);
   border-bottom: 0;
 }
 
 .empty-state {
   display: flex;
-  min-height: 165px;
+  min-height: 180px;
+
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 28px 18px;
+
+  padding: 30px 20px;
+
   text-align: center;
 }
 
 .empty-state strong {
   color: var(--heading);
-  font-size: 1rem;
-  font-weight: 600;
+
+  font-size: 17px;
+  font-weight: 650;
 }
 
 .empty-state span {
-  max-width: 420px;
-  margin-top: 7px;
+  max-width: 440px;
+  margin-top: 8px;
+
   color: var(--muted);
-  font-size: 0.88rem;
+
+  font-size: 15px;
   line-height: 1.6;
 }
 
-/* 13. Leaderboard note */
+/* 22. API status note */
 
 .leaderboard-note {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 21px 26px 0;
+  gap: 11px;
+
+  margin: 22px 28px 0;
+
   color: var(--muted);
-  font-size: 0.82rem;
+
+  font-size: 14px;
   line-height: 1.6;
 }
 
 .status-dot {
   flex: 0 0 auto;
-  width: 8px;
-  height: 8px;
+
+  width: 9px;
+  height: 9px;
+
   background: var(--success);
   border-radius: 50%;
 }
 
-/* 14. Footer */
+/* 23. Footer */
 
 .site-footer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  padding: 28px 0 8px;
+  justify-content: space-between;
+
+  gap: 18px;
+  padding: 30px 0 10px;
+
   color: var(--muted);
-  font-size: 0.84rem;
+
+  font-size: 14px;
   line-height: 1.6;
 }
 
 .site-footer strong {
   color: var(--heading);
-  font-weight: 600;
+  font-weight: 650;
 }
 
-/* 15. Tablet and mobile layout */
+.site-footer a {
+  color: #a8c2ff;
+}
+
+.site-footer a:hover {
+  color: #d2dfff;
+}
+
+/* ==========================================================
+   24. TABLET
+   ========================================================== */
 
 @media (max-width: 760px) {
+
   .page-container {
     width: calc(100% - 32px);
-    padding-top: 32px;
+    padding-top: 34px;
   }
 
   .hero {
-    margin-bottom: 26px;
+    margin-bottom: 28px;
   }
 
   .add-users-panel {
-    padding: 22px;
+    padding: 23px;
   }
 
   .leaderboard-top {
-    align-items: stretch;
     flex-direction: column;
-    gap: 18px;
-    padding: 0 22px;
+    align-items: stretch;
+
+    gap: 20px;
+    padding: 0 23px;
   }
 
   .ranking-control {
@@ -534,21 +720,21 @@ h1 {
   }
 
   #leaderboard_table thead th {
-    padding: 14px 15px;
+    padding: 15px 16px;
   }
 
   #leaderboard_table tbody td {
-    padding: 16px 15px;
+    padding: 17px 16px;
   }
 
   .leaderboard-note {
-    margin-right: 22px;
-    margin-left: 22px;
+    margin-right: 23px;
+    margin-left: 23px;
   }
 
   .status-message:not(:empty) {
-    margin-right: 22px;
-    margin-left: 22px;
+    margin-right: 23px;
+    margin-left: 23px;
   }
 
   .add-users-panel .status-message:not(:empty) {
@@ -557,84 +743,120 @@ h1 {
   }
 }
 
-/* Smaller mobile screens */
+/* ==========================================================
+   25. MOBILE
+   ========================================================== */
 
 @media (max-width: 480px) {
+
   .page-container {
     width: calc(100% - 24px);
-    padding-top: 25px;
+    padding-top: 26px;
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 32px;
   }
 
   .hero-subtitle {
-    font-size: 0.92rem;
+    font-size: 15px;
   }
 
   .add-users-panel {
-    padding: 18px 15px;
+    padding: 20px 16px;
   }
 
   .leaderboard-panel {
-    padding-top: 21px;
+    padding-top: 22px;
     padding-bottom: 18px;
+  }
+
+  .section-heading h2 {
+    font-size: 21px;
   }
 
   .input-row {
     flex-direction: column;
-    gap: 10px;
+    gap: 11px;
   }
 
   #usernames,
   #ranking_select,
   .primary-button {
     width: 100%;
-    min-height: 48px;
+    min-height: 50px;
   }
 
   .leaderboard-top {
-    padding: 0 15px;
+    padding: 0 16px;
+  }
+
+  /* Preserve readable table text.
+     Horizontal scrolling is intentional. */
+
+  #leaderboard_table {
+    min-width: 510px;
   }
 
   #leaderboard_table thead th {
-    padding: 13px 11px;
-    font-size: 0.68rem;
+    padding: 14px 12px;
+    font-size: 12px;
   }
 
   #leaderboard_table tbody td {
-    padding: 14px 11px;
-    font-size: 0.84rem;
+    padding: 16px 12px;
+    font-size: 15px;
   }
 
   #leaderboard_table th:first-child,
   #leaderboard_table td:first-child {
-    width: 48px;
+    width: 55px;
   }
 
   #leaderboard_table td:nth-child(2) {
-    min-width: 125px;
+    min-width: 150px;
+    font-size: 15px;
   }
 
   #leaderboard_table th:last-child,
   #leaderboard_table td:last-child {
-    min-width: 90px;
+    min-width: 100px;
   }
+
+  /* Mobile champion */
 
   #leaderboard_table tbody tr.winner-row td:first-child {
     border-left-width: 3px;
+    font-size: 17px;
+  }
+
+  #leaderboard_table tbody tr.winner-row td:nth-child(2) {
+    font-size: 16px;
+  }
+
+  #leaderboard_table tbody tr.winner-row td:nth-child(2)::before {
+    margin-right: 6px;
+    font-size: 18px;
+  }
+
+  #leaderboard_table tbody tr.winner-row td:nth-child(2)::after {
+    margin-left: 24px;
+    font-size: 10px;
+  }
+
+  #leaderboard_table tbody tr.winner-row td:last-child {
+    font-size: 17px;
   }
 
   .leaderboard-note {
     align-items: flex-start;
-    margin-right: 15px;
-    margin-left: 15px;
+    margin-right: 16px;
+    margin-left: 16px;
   }
 
   .status-message:not(:empty) {
-    margin-right: 15px;
-    margin-left: 15px;
+    margin-right: 16px;
+    margin-left: 16px;
   }
 
   .add-users-panel .status-message:not(:empty) {
@@ -643,16 +865,19 @@ h1 {
   }
 
   .site-footer {
-    align-items: flex-start;
     flex-direction: column;
-    gap: 8px;
-    padding-top: 22px;
+    align-items: flex-start;
+    gap: 9px;
+    padding-top: 24px;
   }
 }
 
-/* 16. Reduced-motion accessibility */
+/* ==========================================================
+   26. REDUCED MOTION
+   ========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
   html {
     scroll-behavior: auto;
   }
