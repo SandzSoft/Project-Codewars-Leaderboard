@@ -13,7 +13,6 @@ function setup() {
   elements.usernamesInput = document.getElementById("usernames");
   elements.addUsersButton = document.getElementById("add_users_button");
   elements.usersMessage = document.getElementById("users_message");
-  elements.leaderboardMessage = document.getElementById("leaderboard_message");
   elements.languageSelect = document.getElementById("ranking_select");
   elements.leaderboardTable = document.querySelector(
     "#leaderboard_table tbody",
@@ -34,11 +33,14 @@ async function handleAddUsersClick() {
   ];
 
   elements.usersMessage.textContent = "";
-  elements.leaderboardMessage.textContent = "";
   elements.leaderboardTable.replaceChildren();
-
   state.validUsers = [];
   state.languages = [];
+  elements.languageSelect.value = "overall";
+  while (elements.languageSelect.options.length > 1) {
+    elements.languageSelect.remove(1);
+  }
+  state.selectedLanguage = "overall";
 
   if (state.usernames.length === 0) {
     elements.usersMessage.textContent =
@@ -50,13 +52,9 @@ async function handleAddUsersClick() {
   try {
     await getValidUsers();
     if (state.validUsers.length === 0) {
-      elements.leaderboardMessage.textContent =
-        "No valid users were found. Please check the usernames and try again.";
       return;
     }
     createLanguageSelect();
-    elements.languageSelect.value = "overall";
-    state.selectedLanguage = "overall";
     renderLeaderboard();
   } finally {
     elements.addUsersButton.disabled = false;
@@ -98,7 +96,7 @@ async function getValidUsers() {
   }
   if (failedUsers.length > 0) {
     messages.push(
-      `Could not retrieve data for: ${failedUsers.join(", ")}. Please try again.`,
+      `Could not retrieve data for: ${failedUsers.join(", ")}. Please try again later.`,
     );
   }
   elements.usersMessage.textContent = messages.join(" ");
@@ -130,10 +128,6 @@ function createLeaderboardTable({ username, clan, ranks }, rank) {
 }
 
 function createLanguageSelect() {
-  while (elements.languageSelect.options.length > 1) {
-    elements.languageSelect.remove(1);
-  }
-
   const languagesList = [];
 
   state.validUsers.forEach((user) => {

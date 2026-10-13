@@ -585,7 +585,7 @@ h1 {
 /* 20. Second and third ranks */
 
 #leaderboard_table tbody tr:nth-child(2):not(.winner-row):not(.empty-row) td:first-child {
-  color: #dce4f0;
+  color: #e7eb0b;
   font-weight: 800;
 }
 
