@@ -1,1197 +1,893 @@
-```css
-/* =========================================
-   1. Design system
-========================================= */
+/* ==========================================================
+   CODEWARS LEADERBOARD
+   Midnight Blue + Victory Gold
+   ========================================================== */
+
+/* 1. Design system */
 
 :root {
-    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 
-    color: #202344;
-    background: #f5f6ff;
+  font-size: 16px;
+  line-height: 1.6;
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  color: #edf2fa;
+  background: #101827;
 
-    --navy: #171b43;
-    --navy-light: #25295d;
-    --primary: #6045f5;
-    --primary-dark: #4932d8;
-    --pink: #f34d9a;
-    --text: #202344;
-    --muted: #747b9c;
-    --border: #e2e5fa;
-    --surface: #ffffff;
-    --background: #f5f6ff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 
-    --card-shadow:
-        0 12px 35px rgba(45, 49, 113, 0.07),
-        0 2px 8px rgba(45, 49, 113, 0.025);
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --page: #101827;
+  --panel: #1b2638;
+  --input-bg: #111b2b;
+
+  /* Table */
+  --table-header: #253348;
+  --row-odd: #1b2638;
+  --row-even: #233148;
+  --row-hover: #2d405b;
+
+  /* Borders */
+  --border: #35445b;
+  --border-soft: #304056;
+  --input-border: #71829b;
+
+  /* Typography */
+  --text: #edf2fa;
+  --heading: #f8fafc;
+  --muted: #b4c2d4;
+  --subtle: #94a3b8;
+
+  /* Primary action */
+  --primary: #638cf5;
+  --primary-hover: #82a4ff;
+  --primary-text: #0c1831;
+
+  /* Victory Gold */
+  --winner-bg: #40331c;
+  --winner-border: #e5b94f;
+  --winner-gold: #ffdf87;
+  --winner-strong: #f4ca64;
+  --winner-muted: #e6c77d;
+
+  /* Errors */
+  --error-bg: #38252e;
+  --error-text: #ffc1c8;
+  --error-border: #f09ca7;
+
+  /* Success */
+  --success: #9dd9b5;
 }
 
+/* 2. Reset */
+
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    min-width: 320px;
-    scroll-behavior: smooth;
+  min-width: 320px;
+  scroll-behavior: smooth;
 }
 
 body {
-    min-width: 320px;
-    min-height: 100vh;
-    margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
 
-    background:
-        radial-gradient(ellipse at 0% 10%,
-            rgba(122, 105, 255, 0.12),
-            transparent 34rem),
-        radial-gradient(ellipse at 100% 50%,
-            rgba(244, 77, 154, 0.06),
-            transparent 30rem),
-        var(--background);
-
-    line-height: 1.6;
+  background: var(--page);
+  color: var(--text);
 }
 
 button,
 input,
 select {
-    font: inherit;
+  font: inherit;
 }
 
 button,
 select {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 button:disabled {
-    cursor: not-allowed;
-    opacity: 0.55;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 a {
-    color: inherit;
+  color: #a8c2ff;
+  text-underline-offset: 4px;
 }
 
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-a:focus-visible {
-    outline: 3px solid #ff82bc;
-    outline-offset: 4px;
+a:hover {
+  color: #d2dfff;
 }
 
+/* Keyboard accessibility */
 
-/* =========================================
-   2. Page layout
-========================================= */
+:focus-visible {
+  outline: 3px solid #a9c3ff;
+  outline-offset: 3px;
+}
+
+/* Screen-reader utility */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 3. Main container */
 
 .page-container {
-    width: min(1380px, calc(100% - 64px));
-    margin: 0 auto;
-    padding: 28px 0 24px;
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 44px 0 28px;
 }
 
-
-/* =========================================
-   3. Hero header
-========================================= */
+/* 4. Header */
 
 .hero {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-
-    min-height: 190px;
-    margin-bottom: 28px;
-    padding: 34px 42px;
-
-    overflow: hidden;
-
-    color: #ffffff;
-    background: linear-gradient(115deg,
-            #171b43 0%,
-            #252958 55%,
-            #392b78 100%);
-
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 24px;
-
-    box-shadow: 0 18px 40px rgba(26, 29, 75, 0.19);
-}
-
-.hero::before {
-    position: absolute;
-    right: -75px;
-    bottom: -200px;
-
-    width: 430px;
-    height: 430px;
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 50%;
-
-    box-shadow:
-        0 0 0 35px rgba(255, 255, 255, 0.025),
-        0 0 0 70px rgba(255, 255, 255, 0.025),
-        0 0 0 105px rgba(255, 255, 255, 0.018);
-
-    content: "";
-    pointer-events: none;
-}
-
-.hero-decoration {
-    position: absolute;
-    top: -90px;
-    left: 40%;
-
-    width: 300px;
-    height: 300px;
-
-    background: rgba(112, 85, 255, 0.08);
-    border-radius: 50%;
-    filter: blur(5px);
-    pointer-events: none;
-}
-
-.brand-icon {
-    position: relative;
-    z-index: 1;
-
-    display: grid;
-    flex: 0 0 82px;
-    place-items: center;
-
-    width: 82px;
-    height: 82px;
-
-    color: #ffffff;
-    background: linear-gradient(145deg, #ff666e, #f34482);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 25px;
-
-    box-shadow: 0 10px 24px rgba(243, 77, 124, 0.25);
-
-    transform: rotate(-4deg);
-}
-
-.brand-icon svg {
-    width: 51px;
-    height: 51px;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-    min-width: 0;
-    flex: 1;
+  margin-bottom: 34px;
 }
 
 .eyebrow {
-    margin: 0 0 8px;
+  margin: 0 0 10px;
 
-    color: #bcb5ff;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 2.5px;
+  color: #b5c9ed;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 h1 {
-    margin: 0;
+  margin: 0;
 
-    color: #ffffff;
-    font-size: clamp(2rem, 3.3vw, 3rem);
-    font-weight: 850;
-    line-height: 1.2;
-    letter-spacing: -1.5px;
-}
+  color: var(--heading);
 
-h1 span {
-    color: #ff7eb5;
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
 }
 
 .hero-subtitle {
-    margin: 12px 0 0;
-    color: #d5d8f5;
-    font-size: 1rem;
+  max-width: 650px;
+  margin: 12px 0 0;
+
+  color: var(--muted);
+
+  font-size: 16px;
+  line-height: 1.7;
 }
 
-.api-badge {
-    position: relative;
-    z-index: 1;
-
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    gap: 12px;
-
-    padding: 13px 17px;
-
-    color: #e4e5ff;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    border-radius: 15px;
-
-    font-size: 0.8rem;
-    line-height: 1.5;
-}
-
-.api-badge strong {
-    color: #ffffff;
-}
-
-.api-badge-icon {
-    color: #ff8bbd;
-    font-size: 1.35rem;
-    font-weight: 800;
-}
-
-
-/* =========================================
-   4. Main cards
-========================================= */
+/* 5. Panels */
 
 .panel {
-    min-width: 0;
-    padding: 28px;
+  min-width: 0;
 
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid rgba(220, 224, 250, 0.95);
-    border-radius: 22px;
-
-    box-shadow: var(--card-shadow);
-
-    transition:
-        border-color 180ms ease,
-        box-shadow 180ms ease,
-        transform 180ms ease;
-}
-
-.panel:hover {
-    border-color: #d5d3ff;
-    box-shadow:
-        0 16px 42px rgba(45, 49, 113, 0.09),
-        0 2px 8px rgba(45, 49, 113, 0.025);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 .add-users-panel {
-    margin-bottom: 24px;
+  padding: 28px;
+  margin-bottom: 26px;
 }
 
+.leaderboard-panel {
+  padding: 27px 0 22px;
+}
 
-/* =========================================
-   5. Section headings and icons
-========================================= */
+/* 6. Section headings */
 
 .section-heading {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-
-    min-width: 0;
-    margin-bottom: 24px;
+  min-width: 0;
 }
 
-.section-heading>div:last-child {
-    min-width: 0;
-}
+.section-heading h2 {
+  margin: 0;
 
-.section-icon {
-    display: grid;
-    flex: 0 0 54px;
-    place-items: center;
+  color: var(--heading);
 
-    width: 54px;
-    height: 54px;
-
-    border-radius: 18px;
-}
-
-.section-icon svg {
-    width: 27px;
-    height: 27px;
-}
-
-.users-icon {
-    color: #ffffff;
-    background: linear-gradient(145deg, #7859ff, #5035e9);
-    box-shadow: 0 7px 17px rgba(96, 69, 245, 0.2);
-}
-
-.trophy-icon {
-    color: #ffffff;
-    background: linear-gradient(145deg, #ffb648, #ff8b42);
-    box-shadow: 0 7px 17px rgba(255, 155, 66, 0.2);
-}
-
-h2 {
-    margin: 0;
-
-    color: var(--text);
-    font-size: 1.35rem;
-    font-weight: 800;
-    line-height: 1.35;
-    letter-spacing: -0.55px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 .section-heading p {
-    margin: 5px 0 0;
+  margin: 7px 0 0;
 
-    color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.5;
+  color: var(--muted);
+
+  font-size: 15px;
+  line-height: 1.65;
 }
 
-
-/* =========================================
-   6. Add users input
-========================================= */
-
-.add-users-form>label {
-    display: block;
-    margin-bottom: 9px;
-
-    color: #44496d;
-    font-size: 0.88rem;
-    font-weight: 750;
+.add-users-panel .section-heading {
+  margin-bottom: 24px;
 }
+
+/* 7. Form labels */
+
+.add-users-form>label,
+.ranking-control label {
+  display: block;
+  margin-bottom: 9px;
+
+  color: #e5edfa;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* 8. Form layout */
 
 .input-row {
-    display: flex;
-    align-items: stretch;
-    gap: 14px;
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+/* 9. Input and select */
+
+#usernames,
+#ranking_select {
+  min-height: 50px;
+  padding: 12px 15px;
+
+  color: var(--text);
+  background: var(--input-bg);
+
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+
+  font-size: 16px;
 }
 
 #usernames {
-    flex: 1;
-    min-width: 0;
-    min-height: 55px;
-
-    padding: 14px 17px;
-
-    color: var(--text);
-    background: #fbfbff;
-
-    border: 1.5px solid #dfe2f6;
-    border-radius: 13px;
-
-    box-shadow: inset 0 1px 2px rgba(31, 35, 81, 0.025);
-
-    transition:
-        border-color 180ms ease,
-        box-shadow 180ms ease,
-        background 180ms ease;
+  flex: 1;
+  min-width: 0;
 }
 
 #usernames::placeholder {
-    color: #939ab6;
+  color: #aebed4;
+  opacity: 1;
 }
 
-#usernames:hover {
-    border-color: #c8c9f9;
+#usernames:hover,
+#ranking_select:hover {
+  border-color: #9cb3d3;
 }
 
-#usernames:focus {
-    background: #ffffff;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(96, 69, 245, 0.11);
-    outline: none;
+#usernames:focus,
+#ranking_select:focus {
+  border-color: #a9c3ff;
 }
+
+#ranking_select option {
+  color: var(--text);
+  background: var(--input-bg);
+}
+
+/* 10. Compare button */
+
+.primary-button {
+  min-height: 50px;
+  padding: 12px 24px;
+
+  color: var(--primary-text);
+  background: var(--primary);
+
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  transition: background-color 150ms ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.primary-button:active:not(:disabled) {
+  background: #557ce2;
+}
+
+/* 11. Form hint */
 
 .field-hint {
-    margin: 11px 0 0;
-    color: var(--muted);
-    font-size: 0.8rem;
+  margin: 11px 0 0;
+
+  color: var(--muted);
+
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.field-hint span {
-    color: var(--pink);
+/* 12. Status messages */
+
+.status-message {
+  margin: 0;
+
+  color: var(--error-text);
+
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
 }
 
+.status-message:not(:empty) {
+  padding: 13px 16px;
+  margin: 17px 28px 0;
 
-/* =========================================
-   7. Buttons
-========================================= */
+  color: var(--error-text);
+  background: var(--error-bg);
 
-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    min-height: 49px;
-    padding: 12px 21px;
-
-    color: #ffffff;
-    font-size: 0.88rem;
-    font-weight: 750;
-    line-height: 1.4;
-
-    background: linear-gradient(110deg, #6546f5, #803fe8 65%, #a044e9);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 13px;
-
-    box-shadow:
-        0 7px 17px rgba(96, 69, 245, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-
-    transition:
-        transform 180ms ease,
-        box-shadow 180ms ease,
-        filter 180ms ease;
+  border: 1px solid #81505d;
+  border-left: 4px solid var(--error-border);
+  border-radius: 8px;
 }
 
-button:hover:not(:disabled) {
-    transform: translateY(-2px);
+/* Status inside form */
 
-    box-shadow:
-        0 11px 23px rgba(96, 69, 245, 0.27),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-
-    filter: brightness(1.06);
+.add-users-panel .status-message:not(:empty) {
+  margin-left: 0;
+  margin-right: 0;
 }
 
-button:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-#add_users_button {
-    flex-shrink: 0;
-    min-width: 155px;
-    background: linear-gradient(110deg, #653ef2, #a13fe7 55%, #f04e9b);
-}
-
-#add_users_button span {
-    font-size: 1.35rem;
-    line-height: 1;
-}
-
-.compare-button {
-    width: 100%;
-    margin-top: 19px;
-}
-
-.compare-button span {
-    font-size: 1.2rem;
-}
-
-
-/* =========================================
-   8. Desktop comparison workspace
-========================================= */
-
-.workspace {
-    display: grid;
-    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.5fr);
-    align-items: stretch;
-    gap: 24px;
-    margin-bottom: 28px;
-}
-
-.workspace>.panel {
-    margin-bottom: 0;
-}
-
-.selection-panel,
-.leaderboard-panel {
-    min-width: 0;
-}
-
-
-/* =========================================
-   9. Table styling
-========================================= */
-
-.table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-
-    border: 1px solid var(--border);
-    border-radius: 14px;
-
-    scrollbar-color: #c6c2f7 #f3f2ff;
-    scrollbar-width: thin;
-}
-
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-
-    background: #ffffff;
-    font-size: 0.88rem;
-    text-align: left;
-}
-
-caption {
-    padding: 0;
-    color: #5f6687;
-    font-size: 0.82rem;
-    text-align: left;
-}
-
-thead {
-    background: linear-gradient(110deg, #f0f0ff, #f7f2ff);
-}
-
-th {
-    padding: 15px 14px;
-
-    color: #3d4266;
-    font-size: 0.8rem;
-    font-weight: 800;
-    white-space: nowrap;
-
-    border-bottom: 1px solid #e7e7fb;
-}
-
-td {
-    padding: 14px;
-
-    color: #3d4266;
-    overflow-wrap: anywhere;
-
-    border-bottom: 1px solid #f0f0fa;
-}
-
-tbody tr:last-child td {
-    border-bottom: none;
-}
-
-tbody tr:not(.empty-row) {
-    transition: background-color 150ms ease;
-}
-
-tbody tr:not(.empty-row):hover {
-    background: #f9f7ff;
-}
-
-#users_table {
-    table-layout: fixed;
-}
-
-#users_table th:first-child,
-#users_table td:first-child {
-    overflow-wrap: anywhere;
-}
-
-#users_table .select-column {
-    width: 75px;
-    text-align: center;
-}
-
-#users_table td:last-child {
-    text-align: center;
-}
-
-#users_table input[type="checkbox"] {
-    width: 19px;
-    height: 19px;
-    margin: 0;
-
-    accent-color: var(--primary);
-    vertical-align: middle;
-    cursor: pointer;
-}
-
-
-/* =========================================
-   10. Leaderboard table
-========================================= */
+/* 13. Leaderboard top */
 
 .leaderboard-top {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    margin-bottom: 20px;
-}
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
 
-.leaderboard-top .section-heading {
-    margin-bottom: 0;
+  gap: 28px;
+  padding: 0 28px;
+  margin-bottom: 25px;
 }
 
 .ranking-control {
-    width: 100%;
-}
-
-.ranking-control label {
-    display: block;
-    margin-bottom: 7px;
-
-    color: #4d5275;
-    font-size: 0.8rem;
-    font-weight: 750;
+  flex: 0 0 220px;
+  min-width: 0;
 }
 
 #ranking_select {
-    display: block;
-    width: 100%;
-    min-height: 49px;
-
-    padding: 11px 14px;
-
-    color: var(--text);
-    background-color: #ffffff;
-
-    border: 1.5px solid #dfe2f6;
-    border-radius: 12px;
-
-    transition:
-        border-color 180ms ease,
-        box-shadow 180ms ease;
+  width: 100%;
 }
 
-#ranking_select:hover {
-    border-color: #c5c3fa;
+/* 14. Table wrapper */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  border-top: 1px solid var(--border);
+
+  scrollbar-color: #617592 var(--panel);
+  scrollbar-width: thin;
 }
 
-#ranking_select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(96, 69, 245, 0.09);
-    outline: none;
-}
-
-.leaderboard-table-wrapper {
-    border-radius: 14px;
-}
+/* 15. Table */
 
 #leaderboard_table {
-    min-width: 410px;
+  width: 100%;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  text-align: left;
 }
 
-#leaderboard_table th,
-#leaderboard_table td {
-    padding: 14px 12px;
+/* 16. Table headings */
+
+#leaderboard_table thead th {
+  padding: 17px 21px;
+
+  color: #c0cede;
+  background: var(--table-header);
+
+  border-bottom: 1px solid #455671;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-#leaderboard_table .rank-column {
-    width: 54px;
-    text-align: center;
+/* 17. Alternating rows */
+
+#leaderboard_table tbody tr {
+  background: var(--row-odd);
+
+  transition: background-color 150ms ease;
 }
 
-#leaderboard_table .score-column {
-    text-align: right;
+#leaderboard_table tbody tr:nth-child(even):not(.winner-row):not(.empty-row) {
+  background: var(--row-even);
 }
 
+#leaderboard_table tbody tr:hover:not(.winner-row):not(.empty-row) {
+  background: var(--row-hover);
+}
+
+/* 18. Table cells */
+
+#leaderboard_table tbody td {
+  padding: 19px 21px;
+
+  color: var(--text);
+
+  border-bottom: 1px solid var(--border-soft);
+
+  font-size: 16px;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+/* Rank column */
+
+#leaderboard_table th:first-child,
 #leaderboard_table td:first-child {
-    text-align: center;
+  width: 84px;
+  text-align: center;
 }
 
+#leaderboard_table tbody td:first-child {
+  color: #c0cede;
+  font-weight: 700;
+}
+
+/* Username column */
+
+#leaderboard_table td:nth-child(2) {
+  min-width: 160px;
+
+  color: #f1f5fb;
+
+  font-size: 16px;
+  font-weight: 650;
+}
+
+/* Clan column */
+
+#leaderboard_table td:nth-child(3) {
+  color: var(--muted);
+}
+
+/* Score column */
+
+#leaderboard_table th:last-child,
 #leaderboard_table td:last-child {
-    color: #4f3cd7;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-    text-align: right;
+  min-width: 125px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
+#leaderboard_table tbody td:last-child {
+  color: #f1f5fb;
 
-/* =========================================
-   11. Empty states
-========================================= */
+  font-size: 16px;
+  font-weight: 700;
+}
 
-.empty-row td {
-    padding: 0;
-    border-bottom: none;
+/* ==========================================================
+   19. FIRST PLACE - VICTORY GOLD
+   ========================================================== */
+
+#leaderboard_table tbody tr.winner-row {
+  background: var(--winner-bg);
+}
+
+/* Golden winner row */
+
+#leaderboard_table tbody tr.winner-row td {
+  color: #f6e9c6;
+
+  border-top: 1px solid var(--winner-border);
+  border-bottom: 1px solid var(--winner-border);
+}
+
+/* Rank 1 gold badge cell */
+
+#leaderboard_table tbody tr.winner-row td:first-child {
+  color: #392607;
+  background: var(--winner-strong);
+
+  border-left: 4px solid var(--winner-border);
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+/* Winner username */
+
+#leaderboard_table tbody tr.winner-row td:nth-child(2) {
+  color: var(--winner-gold);
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* Crown before winner username */
+
+#leaderboard_table tbody tr.winner-row td:nth-child(2)::before {
+  content: "♛";
+  display: inline-block;
+
+  margin-right: 10px;
+
+  color: var(--winner-strong);
+
+  font-size: 20px;
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+/* Champion label */
+
+#leaderboard_table tbody tr.winner-row td:nth-child(2)::after {
+  content: "CHAMPION";
+  display: block;
+
+  margin-top: 3px;
+  margin-left: 30px;
+
+  color: var(--winner-muted);
+
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.13em;
+}
+
+/* Winner clan */
+
+#leaderboard_table tbody tr.winner-row td:nth-child(3) {
+  color: #e8d7ad;
+  font-weight: 500;
+}
+
+/* Winner score */
+
+#leaderboard_table tbody tr.winner-row td:last-child {
+  color: var(--winner-gold);
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+/* 20. Second and third ranks */
+
+#leaderboard_table tbody tr:nth-child(2):not(.winner-row):not(.empty-row) td:first-child {
+  color: #e7eb0b;
+  font-weight: 800;
+}
+
+#leaderboard_table tbody tr:nth-child(3):not(.winner-row):not(.empty-row) td:first-child {
+  color: #e6b394;
+  font-weight: 800;
+}
+
+/* 21. Empty leaderboard */
+
+#leaderboard_table tbody tr.empty-row td {
+  padding: 0;
+
+  background: var(--panel);
+  border-bottom: 0;
 }
 
 .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
+  display: flex;
+  min-height: 180px;
 
-    min-height: 175px;
-    padding: 24px 16px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-    color: var(--muted);
-    text-align: center;
-}
+  padding: 30px 20px;
 
-.empty-icon {
-    display: grid;
-    place-items: center;
-
-    width: 53px;
-    height: 53px;
-    margin-bottom: 5px;
-
-    color: #7558f4;
-    background: #f0edff;
-    border-radius: 17px;
-
-    font-size: 2rem;
-    line-height: 1;
+  text-align: center;
 }
 
 .empty-state strong {
-    color: #34395f;
-    font-size: 0.92rem;
+  color: var(--heading);
+
+  font-size: 17px;
+  font-weight: 650;
 }
 
-.empty-state>span:last-child {
-    max-width: 290px;
-    font-size: 0.82rem;
-    line-height: 1.6;
+.empty-state span {
+  max-width: 440px;
+  margin-top: 8px;
+
+  color: var(--muted);
+
+  font-size: 15px;
+  line-height: 1.6;
 }
 
-.leaderboard-empty {
-    min-height: 240px;
-    padding: 32px 20px;
+/* 22. API status note */
+
+.leaderboard-note {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  margin: 22px 28px 0;
+
+  color: var(--muted);
+
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.trophy-empty {
-    color: #b97813;
-    background: linear-gradient(145deg, #fff3c9, #ffe2a1);
-    border-radius: 50%;
-    font-size: 2.2rem;
+.status-dot {
+  flex: 0 0 auto;
+
+  width: 9px;
+  height: 9px;
+
+  background: var(--success);
+  border-radius: 50%;
 }
 
-
-/* =========================================
-   12. Winner highlight
-========================================= */
-
-/*
-   JavaScript can add the "winner-row" class
-   to the first row after sorting the scores.
-*/
-
-#leaderboard_table tbody tr.winner-row {
-    background: linear-gradient(100deg,
-            #fff9e7,
-            #fff4fa 70%,
-            #f7f2ff);
-}
-
-#leaderboard_table tbody tr.winner-row td {
-    color: #393052;
-    border-bottom-color: #f5e3bb;
-    font-weight: 750;
-}
-
-#leaderboard_table tbody tr.winner-row td:first-child {
-    color: #a66b0b;
-}
-
-#leaderboard_table tbody tr.winner-row td:last-child {
-    color: #8d5b08;
-}
-
-
-/* =========================================
-   13. Status messages
-========================================= */
-
-.status-message {
-    margin: 12px 0;
-    padding: 0;
-
-    color: #555b7d;
-    font-size: 0.88rem;
-    overflow-wrap: anywhere;
-}
-
-.status-message:empty {
-    display: none;
-}
-
-.status-message.error {
-    padding: 12px 14px;
-    color: #9e263f;
-    background: #fff0f2;
-    border: 1px solid #ffd4dc;
-    border-radius: 10px;
-}
-
-.status-message.success {
-    padding: 12px 14px;
-    color: #176b4a;
-    background: #ecfbf3;
-    border: 1px solid #c6f1d9;
-    border-radius: 10px;
-}
-
-
-/* =========================================
-   14. Footer
-========================================= */
+/* 23. Footer */
 
 .site-footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    padding: 24px 28px;
+  gap: 18px;
+  padding: 30px 0 10px;
 
-    color: #dfe1ff;
-    background: linear-gradient(110deg, #171b43, #252958);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
+  color: var(--muted);
 
-    box-shadow: 0 10px 26px rgba(26, 29, 75, 0.13);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.footer-credit {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    font-size: 0.85rem;
+.site-footer strong {
+  color: var(--heading);
+  font-weight: 650;
 }
 
-.footer-credit strong {
-    color: #ffffff;
+.site-footer a {
+  color: #a8c2ff;
 }
 
-.footer-heart {
-    color: #ff6b9d;
-    font-size: 1.35rem;
+.site-footer a:hover {
+  color: #d2dfff;
 }
 
-.footer-divider {
-    width: 1px;
-    height: 25px;
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.github-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-
-    color: #e3ddff;
-    font-size: 0.84rem;
-    font-weight: 700;
-    text-decoration: none;
-
-    transition: color 180ms ease;
-}
-
-.github-link svg {
-    width: 21px;
-    height: 21px;
-}
-
-.github-link:hover {
-    color: #ff8cbe;
-}
-
-.footer-tagline {
-    flex-basis: 100%;
-    margin: 0;
-
-    color: #a9aed7;
-    font-size: 0.77rem;
-    text-align: center;
-    letter-spacing: 0.7px;
-}
-
-
-/* =========================================
-   15. Tablet layout
-========================================= */
-
-@media (min-width: 761px) {
-    .leaderboard-top {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(180px, 0.75fr);
-        align-items: end;
-        gap: 18px;
-    }
-
-    .ranking-control {
-        max-width: 260px;
-        justify-self: end;
-    }
-}
-
-@media (max-width: 1050px) {
-    .page-container {
-        width: calc(100% - 40px);
-    }
-
-    .hero {
-        gap: 18px;
-        padding: 32px;
-    }
-
-    .brand-icon {
-        flex-basis: 68px;
-        width: 68px;
-        height: 68px;
-    }
-
-    .brand-icon svg {
-        width: 43px;
-        height: 43px;
-    }
-
-    .api-badge {
-        padding: 10px 12px;
-    }
-
-    .workspace {
-        grid-template-columns: minmax(250px, 0.9fr) minmax(0, 1.35fr);
-        gap: 18px;
-    }
-
-    .panel {
-        padding: 22px;
-    }
-
-    .section-heading {
-        gap: 11px;
-    }
-
-    .section-icon {
-        flex-basis: 46px;
-        width: 46px;
-        height: 46px;
-        border-radius: 15px;
-    }
-
-    h2 {
-        font-size: 1.2rem;
-    }
-}
-
-
-/* =========================================
-   16. Mobile layout
-========================================= */
+/* ==========================================================
+   24. TABLET
+   ========================================================== */
 
 @media (max-width: 760px) {
-    .page-container {
-        width: calc(100% - 24px);
-        padding-top: 12px;
-    }
 
-    .hero {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        gap: 15px;
+  .page-container {
+    width: calc(100% - 32px);
+    padding-top: 34px;
+  }
 
-        min-height: auto;
-        margin-bottom: 18px;
-        padding: 25px 20px;
+  .hero {
+    margin-bottom: 28px;
+  }
 
-        border-radius: 19px;
-    }
+  .add-users-panel {
+    padding: 23px;
+  }
 
-    .brand-icon {
-        grid-column: 1;
-        grid-row: 1;
-        align-self: start;
+  .leaderboard-top {
+    flex-direction: column;
+    align-items: stretch;
 
-        flex-basis: 51px;
-        width: 51px;
-        height: 51px;
+    gap: 20px;
+    padding: 0 23px;
+  }
 
-        border-radius: 15px;
-    }
+  .ranking-control {
+    flex-basis: auto;
+    width: 100%;
+  }
 
-    .brand-icon svg {
-        width: 34px;
-        height: 34px;
-    }
+  #leaderboard_table thead th {
+    padding: 15px 16px;
+  }
 
-    .hero-content {
-        grid-column: 2;
-        grid-row: 1;
-    }
+  #leaderboard_table tbody td {
+    padding: 17px 16px;
+  }
 
-    .eyebrow {
-        font-size: 0.62rem;
-        letter-spacing: 1.5px;
-    }
+  .leaderboard-note {
+    margin-right: 23px;
+    margin-left: 23px;
+  }
 
-    h1 {
-        font-size: clamp(1.55rem, 5.5vw, 2.15rem);
-        letter-spacing: -0.8px;
-    }
+  .status-message:not(:empty) {
+    margin-right: 23px;
+    margin-left: 23px;
+  }
 
-    .hero-subtitle {
-        margin-top: 9px;
-        font-size: 0.86rem;
-    }
-
-    .api-badge {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        justify-self: start;
-
-        padding: 8px 12px;
-        font-size: 0.76rem;
-    }
-
-    .panel {
-        padding: 20px 16px;
-        border-radius: 17px;
-    }
-
-    .add-users-panel {
-        margin-bottom: 18px;
-    }
-
-    .workspace {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 18px;
-        margin-bottom: 18px;
-    }
-
-    .section-heading {
-        align-items: flex-start;
-        margin-bottom: 20px;
-    }
-
-    .section-icon {
-        flex-basis: 43px;
-        width: 43px;
-        height: 43px;
-    }
-
-    .section-icon svg {
-        width: 23px;
-        height: 23px;
-    }
-
-    h2 {
-        font-size: 1.15rem;
-    }
-
-    .section-heading p {
-        font-size: 0.82rem;
-    }
-
-    .input-row {
-        flex-direction: column;
-        gap: 11px;
-    }
-
-    #usernames {
-        min-height: 51px;
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-
-    #add_users_button {
-        width: 100%;
-    }
-
-    .compare-button {
-        width: 100%;
-    }
-
-    #users_table th,
-    #users_table td,
-    #leaderboard_table th,
-    #leaderboard_table td {
-        padding: 12px 9px;
-        font-size: 0.81rem;
-    }
-
-    #leaderboard_table {
-        min-width: 390px;
-    }
-
-    .leaderboard-top {
-        gap: 18px;
-    }
-
-    .ranking-control {
-        max-width: none;
-    }
-
-    .site-footer {
-        gap: 13px;
-        padding: 22px 14px;
-        border-radius: 17px;
-    }
-
-    .footer-credit {
-        flex-wrap: wrap;
-        justify-content: center;
-        font-size: 0.79rem;
-    }
-
-    .footer-divider {
-        display: none;
-    }
-
-    .github-link {
-        font-size: 0.8rem;
-    }
+  .add-users-panel .status-message:not(:empty) {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
+/* ==========================================================
+   25. MOBILE
+   ========================================================== */
 
-/* =========================================
-   17. Small phones
-========================================= */
+@media (max-width: 480px) {
 
-@media (max-width: 380px) {
-    .page-container {
-        width: calc(100% - 16px);
-    }
+  .page-container {
+    width: calc(100% - 24px);
+    padding-top: 26px;
+  }
 
-    .hero {
-        gap: 11px;
-        padding: 20px 13px;
-    }
+  h1 {
+    font-size: 32px;
+  }
 
-    .brand-icon {
-        flex-basis: 43px;
-        width: 43px;
-        height: 43px;
-    }
+  .hero-subtitle {
+    font-size: 15px;
+  }
 
-    .brand-icon svg {
-        width: 29px;
-        height: 29px;
-    }
+  .add-users-panel {
+    padding: 20px 16px;
+  }
 
-    h1 {
-        font-size: 1.45rem;
-    }
+  .leaderboard-panel {
+    padding-top: 22px;
+    padding-bottom: 18px;
+  }
 
-    .panel {
-        padding: 17px 11px;
-    }
+  .section-heading h2 {
+    font-size: 21px;
+  }
 
-    .section-heading {
-        gap: 9px;
-    }
+  .input-row {
+    flex-direction: column;
+    gap: 11px;
+  }
 
-    h2 {
-        font-size: 1.05rem;
-    }
+  #usernames,
+  #ranking_select,
+  .primary-button {
+    width: 100%;
+    min-height: 50px;
+  }
 
-    #leaderboard_table {
-        min-width: 365px;
-    }
+  .leaderboard-top {
+    padding: 0 16px;
+  }
+
+  /* Preserve readable table text.
+     Horizontal scrolling is intentional. */
+
+  #leaderboard_table {
+    min-width: 510px;
+  }
+
+  #leaderboard_table thead th {
+    padding: 14px 12px;
+    font-size: 12px;
+  }
+
+  #leaderboard_table tbody td {
+    padding: 16px 12px;
+    font-size: 15px;
+  }
+
+  #leaderboard_table th:first-child,
+  #leaderboard_table td:first-child {
+    width: 55px;
+  }
+
+  #leaderboard_table td:nth-child(2) {
+    min-width: 150px;
+    font-size: 15px;
+  }
+
+  #leaderboard_table th:last-child,
+  #leaderboard_table td:last-child {
+    min-width: 100px;
+  }
+
+  /* Mobile champion */
+
+  #leaderboard_table tbody tr.winner-row td:first-child {
+    border-left-width: 3px;
+    font-size: 17px;
+  }
+
+  #leaderboard_table tbody tr.winner-row td:nth-child(2) {
+    font-size: 16px;
+  }
+
+  #leaderboard_table tbody tr.winner-row td:nth-child(2)::before {
+    margin-right: 6px;
+    font-size: 18px;
+  }
+
+  #leaderboard_table tbody tr.winner-row td:nth-child(2)::after {
+    margin-left: 24px;
+    font-size: 10px;
+  }
+
+  #leaderboard_table tbody tr.winner-row td:last-child {
+    font-size: 17px;
+  }
+
+  .leaderboard-note {
+    align-items: flex-start;
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+
+  .status-message:not(:empty) {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+
+  .add-users-panel .status-message:not(:empty) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+    padding-top: 24px;
+  }
 }
 
-
-/* =========================================
-   18. Reduced motion accessibility
-========================================= */
+/* ==========================================================
+   26. REDUCED MOTION
+   ========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
 
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
