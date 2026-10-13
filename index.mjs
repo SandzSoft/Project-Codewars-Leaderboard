@@ -1,3 +1,5 @@
+import { sortUsersBySelectedLanguage, makeFetchRequest } from "./functions.js";
+
 const elements = {};
 
 const state = {
@@ -62,27 +64,11 @@ async function handleAddUsersClick() {
 }
 
 function renderLeaderboard() {
-  const rows = sortUsersBySelectedLanguage(state.validUsers).map(
-    (user, index) => createLeaderboardTable(user, index + 1),
-  );
+  const rows = sortUsersBySelectedLanguage(
+    state.validUsers,
+    state.selectedLanguage,
+  ).map((user, index) => createLeaderboardTable(user, index + 1));
   elements.leaderboardTable.replaceChildren(...rows);
-}
-
-function sortUsersBySelectedLanguage(users) {
-  if (state.selectedLanguage === "overall") {
-    return [...users].sort(
-      (a, b) => (b.ranks.overall?.score ?? 0) - (a.ranks.overall?.score ?? 0),
-    );
-  }
-  const filteredUsers = users.filter(
-    (user) => user.ranks.languages?.[state.selectedLanguage],
-  );
-
-  return [...filteredUsers].sort(
-    (a, b) =>
-      (b.ranks.languages[state.selectedLanguage]?.score ?? 0) -
-      (a.ranks.languages[state.selectedLanguage]?.score ?? 0),
-  );
 }
 
 async function getValidUsers() {
@@ -91,10 +77,7 @@ async function getValidUsers() {
 
   for (const username of state.usernames) {
     try {
-      const response = await fetch(
-        `https://www.codewars.com/api/v1/users/${encodeURIComponent(username)}`,
-      );
-
+      const response = await makeFetchRequest(username);
       if (!response.ok) {
         if (response.status === 404) {
           invalidUsers.push(username);

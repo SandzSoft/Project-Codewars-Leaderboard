@@ -1,33 +1,135 @@
-// This is a placeholder file which shows how you use the nock library to
-// "mock" fetch requests, replacing real requests with fake ones that you
-// control in the test. This means you can "force" the fetch request to return
-// data in the format that you want.
-// IMPORTANT: You _must_ run npm install within the Project-Codewars-Leaderboard
-// folder for this to work.
-// You can change or delete the contents of the file once you have understood
-// how it works.
-
-import test from "node:test";
-import assert from "node:assert";
+import { describe, test } from "node:test";
+import assert from "node:assert/strict";
 import nock from "nock";
-import { makeFetchRequest } from "./index.mjs";
+import { makeFetchRequest, sortUsersBySelectedLanguage } from "./functions.js";
 
-test("mocks a fetch function", async () => {
-  // Create a fetch request "mock" using the nock library, which "replaces"
-  // real requests with fake ones that we can control in the test using nock
-  // functions.
-  // In this example, we set up nock so that it looks for GET requests to
-  // https://example.com/test (no other URLs will work) and responds with a 200
-  // HTTP status code, and the body {"user": "someone"}.
-  const scope = nock("https://example.com").get("/test").reply(200, JSON.stringify({ user: "someone" }));
+// Sample user data for sorting and filtering tests
+const users = [
+  {
+    username: "user1",
+    ranks: {
+      overall: { score: 10 },
+      languages: {
+        javascript: { score: 15 },
+        java: { score: 50 },
+      },
+    },
+  },
+  {
+    username: "user2",
+    ranks: {
+      overall: { score: 105 },
+      languages: {
+        javascript: { score: 90 },
+        python: { score: 30 },
+        java: { score: 10 },
+      },
+    },
+  },
+  {
+    username: "user3",
+    ranks: {
+      overall: { score: 30 },
+      languages: {
+        javascript: { score: 105 },
+      },
+    },
+  },
+  {
+    username: "user4",
+    ranks: {
+      overall: { score: 200 },
+      languages: {
+        javascript: { score: 200 },
+        python: { score: 20 },
+        java: { score: 80 },
+      },
+    },
+  },
+  {
+    username: "user5",
+    ranks: {
+      overall: { score: 0 },
+      languages: {
+        python: { score: 10 },
+      },
+    },
+  },
+  {
+    username: "user6",
+    ranks: {
+      overall: { score: 0 },
+      languages: {},
+    },
+  },
+];
 
-  // Check that the response we got back included the fake body we set up.
-  const response = await makeFetchRequest();
+// API request test
+test("makes a fetch request for a Codewars user", async () => {
+  const scope = nock("https://www.codewars.com")
+    .get("/api/v1/users/someone")
+    .reply(200, { username: "someone" });
+
+  const response = await makeFetchRequest("someone");
   const parsedResponse = await response.json();
-  assert(parsedResponse.user === "someone");
 
-  // Ensure that a fetch request has been replaced by the nock library. This
-  // helps ensure that you're not making real fetch requests that don't match
-  // the nock configuration.
-  assert(scope.isDone() === true, "No matching fetch request has been made");
+  assert.equal(response.status, 200);
+  assert.equal(parsedResponse.username, "someone");
+  assert.equal(scope.isDone(), true, "No matching fetch request was made");
+});
+
+// Sorting and filtering tests
+describe("sortUsersBySelectedLanguage", () => {
+  test("sorts users by overall score, highest first", () => {
+    const sortedUsers = sortUsersBySelectedLanguage(users, "overall");
+
+    assert.deepEqual(
+      sortedUsers.map((user) => user.username),
+      ["user4", "user2", "user3", "user1", "user5", "user6"],
+    );
+  });
+
+  test("filters and sorts users by JavaScript score", () => {
+    const sortedUsers = sortUsersBySelectedLanguage(users, "javascript");
+
+    assert.deepEqual(
+      sortedUsers.map((user) => user.username),
+      ["user4", "user3", "user2", "user1"],
+    );
+  });
+
+  test("filters and sorts users by Python score", () => {
+    const sortedUsers = sortUsersBySelectedLanguage(users, "python");
+
+    assert.deepEqual(
+      sortedUsers.map((user) => user.username),
+      ["user2", "user4", "user5"],
+    );
+  });
+
+  test("filters and sorts users by Java score", () => {
+    const sortedUsers = sortUsersBySelectedLanguage(users, "java");
+
+    assert.deepEqual(
+      sortedUsers.map((user) => user.username),
+      ["user4", "user1", "user2"],
+    );
+  });
+
+  test("returns an empty array when no users have the selected language", () => {
+    const sortedUsers = sortUsersBySelectedLanguage(users, "nonexistent");
+
+    assert.deepEqual(sortedUsers, []);
+  });
+
+  test("does not change the original users array", () => {
+    const originalOrder = users.map((user) => user.username);
+
+    sortUsersBySelectedLanguage(users, "javascript");
+
+    assert.deepEqual(
+      users.map((user) => user.username),
+      originalOrder,
+    );
+  });
 });
