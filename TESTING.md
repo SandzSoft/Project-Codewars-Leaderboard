@@ -4,14 +4,12 @@
 
 Run the following command in the project directory:
 
-```bash
 npm test
-```
 
 The tests in `index.test.mjs` cover:
 
 - API request functionality.
-- Sorting users by overall, JavaScript, Python and Java scores.
+- Filtering and Sorting users by overall, JavaScript, Python and Java scores.
 - Filtering users without the selected language ranking.
 - Ensuring the original users array remains unchanged.
 

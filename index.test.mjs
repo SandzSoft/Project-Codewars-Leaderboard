@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import nock from "nock";
 import { makeFetchRequest, sortUsersBySelectedLanguage } from "./functions.js";
 
+// Mocking fetch requests for testing
 test("mocks a fetch function", async () => {
   const scope = nock("https://www.codewars.com")
     .get("/api/v1/users/someone")
@@ -75,20 +76,6 @@ const users = [
     },
   },
 ];
-
-// API request test
-test("makes a fetch request for a Codewars user", async () => {
-  const scope = nock("https://www.codewars.com")
-    .get("/api/v1/users/someone")
-    .reply(200, { username: "someone" });
-
-  const response = await makeFetchRequest("someone");
-  const parsedResponse = await response.json();
-
-  assert.equal(response.status, 200);
-  assert.equal(parsedResponse.username, "someone");
-  assert.equal(scope.isDone(), true, "No matching fetch request was made");
-});
 
 // Sorting and filtering tests
 describe("sortUsersBySelectedLanguage", () => {
