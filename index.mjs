@@ -96,7 +96,9 @@ async function getValidUsers() {
   }
   if (failedUsers.length > 0) {
     messages.push(
-      `Could not retrieve data for: ${failedUsers.join(", ")}. Please try again later.`,
+      `Could not retrieve data for: ${failedUsers.join(", ")}. ` +
+        "Check your internet connection and try again. " +
+        "If the problem continues, please try again later.",
     );
   }
   elements.usersMessage.textContent = messages.join(" ");
